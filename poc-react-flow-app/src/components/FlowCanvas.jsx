@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import ReactFlow, {
   ReactFlowProvider,
   MiniMap,
@@ -18,6 +18,7 @@ export default function FlowCanvas({
   setEdges,
   onDataReceived,
 }) {
+
   const onNodesChange = useCallback(
     (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
     [setNodes]
@@ -27,16 +28,20 @@ export default function FlowCanvas({
     [setEdges]
   );
   const onConnect = useCallback(
-    (connection) => setEdges((eds) => addEdge(connection, eds)),
+    (connection) => {
+      console.log('connection', connection);
+      setEdges((eds) => addEdge(connection, eds));
+    },
     [setEdges]
   );
   const onClickNode = useCallback(
     (event, node) => {
-      console.log('click node id', node.id);
+      console.log('click node id', node.id, node);
       onDataReceived(node);
     },
     [onDataReceived]
   );
+
 
   return (
     <div className="flex-1 bg-gray-50 p-4">
@@ -50,12 +55,11 @@ export default function FlowCanvas({
             onNodeClick={onClickNode}
             onConnect={onConnect}
             nodeTypes={nodeTypes}
-            deleteKeyCode="Delete"
             fitView
           >
             <Controls />
             <MiniMap />
-            <Background variant="dots" gap={12} size={1} />
+            <Background variant="lines" gap={12} size={1} />
           </ReactFlow>
         </ReactFlowProvider>
       </div>

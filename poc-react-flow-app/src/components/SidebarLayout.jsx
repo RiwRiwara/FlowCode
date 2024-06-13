@@ -7,13 +7,13 @@ import { addNode, updateNodes, undo, deleteThisNode } from '../utils/nodeUtils';
 const SidebarLayout = () => {
   const [nodes, setNodes] = useState([]);
   const [edges, setEdges] = useState([]);
+  
   const [history, setHistory] = useState([]);
   const [selectedNode, setSelectedNode] = useState(null);
 
   const handleAddNode = (type) => addNode(type, nodes, setNodes, setHistory);
   const handleUpdateNodes = (newNodes) => updateNodes(newNodes, nodes, setNodes, setHistory);
   const handleUndo = () => undo(history, setHistory, setNodes);
-  const handleDeleteNode = (nodeId) => deleteThisNode(nodeId, nodes, setNodes, setHistory);
 
   const onDataReceived = (data) => setSelectedNode(data);
 
@@ -25,6 +25,7 @@ const SidebarLayout = () => {
         updateNodes={handleUpdateNodes}
         undo={handleUndo}
         nodes={nodes}
+        edges={edges}
       />
       {/* Main Content */}
       <FlowCanvas
